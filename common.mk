@@ -449,4 +449,5 @@ TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
 
 # Inherit proprietary blobs
-$(call inherit-product, vendor/samsung/m51-common/m51-common-vendor.mk)
+$(call inherit-product, vendor/samsung/ruin-common/ruin-common-vendor.mk)
+$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
