@@ -27,9 +27,6 @@ PRODUCT_ENFORCE_RRO_TARGETS := *
 # APEX
 PRODUCT_COMPRESSED_APEX := false
 
-# VNDK
-PRODUCT_TARGET_VNDK_VERSION := 30
-
 # No A/B
 AB_OTA_UPDATER := false
 
@@ -43,14 +40,12 @@ PRODUCT_PACKAGES += \
     init.samsung.bsp.rc \
     init.samsung.display.rc \
     init.samsung.rc \
-    init.samsung.power.rc \
     init.fingerprint.rc \
     init.ramplus.rc \
     init.target.rc \
-    ueventd.qcom.rc \
+    ueventd.rc \
     wifi_qcom.rc \
-    wifi_sec.rc \
-    init.audio.samsung.rc \
+    wifi.rc \
     init.nfc.samsung.rc \
     init.vendor.onebinary.rc \
     init.vendor.rilchip.rc \
