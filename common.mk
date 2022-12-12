@@ -43,9 +43,9 @@ PRODUCT_PACKAGES += \
     init.fingerprint.rc \
     init.ramplus.rc \
     init.target.rc \
-    ueventd.rc \
+    ueventd_qcom.rc \
     wifi_qcom.rc \
-    wifi.rc \
+    wifi_sec.rc \
     init.nfc.samsung.rc \
     init.vendor.onebinary.rc \
     init.vendor.rilchip.rc \
