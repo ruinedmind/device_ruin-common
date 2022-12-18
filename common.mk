@@ -436,7 +436,11 @@ PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH) \
     hardware/google/interfaces \
     hardware/google/pixel \
-    hardware/samsung/aidl/power-libperfmgr
+    hardware/samsung/aidl/power-libperfmgr \
+    hardware/samsung
+
+# VNDK
+PRODUCT_TARGET_VNDK_VERSION := 30
 
 # Prop files
 TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
