@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-COMMON_PATH := device/samsung/ruin-common
+COMMON_PATH := device/samsung/m51-common
 
 DEVICE_PACKAGE_OVERLAYS += $(COMMON_PATH)/overlay
 
@@ -26,6 +26,9 @@ PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # APEX
 PRODUCT_COMPRESSED_APEX := false
+
+# VNDK
+PRODUCT_TARGET_VNDK_VERSION := 30
 
 # No A/B
 AB_OTA_UPDATER := false
@@ -40,12 +43,14 @@ PRODUCT_PACKAGES += \
     init.samsung.bsp.rc \
     init.samsung.display.rc \
     init.samsung.rc \
+    init.samsung.power.rc \
     init.fingerprint.rc \
     init.ramplus.rc \
     init.target.rc \
-    ueventd_qcom.rc \
+    ueventd.qcom.rc \
     wifi_qcom.rc \
     wifi_sec.rc \
+    init.audio.samsung.rc \
     init.nfc.samsung.rc \
     init.vendor.onebinary.rc \
     init.vendor.rilchip.rc \
@@ -63,7 +68,7 @@ PRODUCT_PACKAGES += \
 # Audio
 PRODUCT_PACKAGES += \
     android.hardware.audio.service \
-    android.hardware.audio@6.0-impl \
+    android.hardware.audio@6.0-impl.sm6150 \
     android.hardware.audio.effect@6.0-impl \
     android.hardware.soundtrigger@2.2-impl \
     audio.r_submix.default \
@@ -106,7 +111,7 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.6-service \
+    android.hardware.camera.provider@2.6-service.sm6150 \
     android.hardware.camera.provider@2.4-legacy \
     android.hardware.camera.provider@2.5-legacy \
     camera.device@1.0-impl \
@@ -172,25 +177,30 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.3-service
+    android.hardware.biometrics.fingerprint@2.3-service.samsung
 
 # fastbootd
 PRODUCT_PACKAGES += \
     fastbootd
+
+# FastCharge
+PRODUCT_PACKAGES += \
+    vendor.lineage.fastcharge@1.0-service.samsung \
+	vendor.lineage.livedisplay@2.0-service.samsung-qcom
 
 # FlipFlap
 PRODUCT_PACKAGES += \
     FlipFlap
 
 # FM
-# PRODUCT_PACKAGES += \
-#    FM2 \
-#    libqcomfm_jni \
-#    qcom.fmradio \
-#    qcom.fmradio.xml
+PRODUCT_PACKAGES += \
+    FM2 \
+    libqcomfm_jni \
+    qcom.fmradio \
+    qcom.fmradio.xml
 
-# PRODUCT_BOOT_JARS += \
- #   qcom.fmradio
+PRODUCT_BOOT_JARS += \
+    qcom.fmradio
 
 # Gatekeeper
 PRODUCT_PACKAGES += \
@@ -202,8 +212,7 @@ PRODUCT_COPY_FILES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health@2.1-impl \
-    android.hardware.health@2.1-service
+    android.hardware.health@2.1.vendor
 
 # HIDL
 PRODUCT_PACKAGES += \
@@ -225,9 +234,7 @@ PRODUCT_COPY_FILES += \
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@4.0-service.samsung \
-    libskeymaster4device.vendor:64 \
-    libkeymaster4support.vendor:64 \
-    libkeymaster4_1support.vendor:64
+    libkeymaster4_1support.vendor
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -334,9 +341,7 @@ PRODUCT_COPY_FILES += \
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power-service.samsung-libperfmgr \
-    android.hardware.power.stats@1.0-service.mock \
-    android.hardware.power@1.3 \
-    android.hardware.power@1.3.vendor
+    android.hardware.power@1.2.vendor
 
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
@@ -377,6 +382,14 @@ PRODUCT_PACKAGES += \
     android.hardware.thermal@2.0.vendor \
     android.frameworks.cameraservice.service@2.1.vendor
 
+# Touch features
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch@1.0-service.samsung
+
+# Trust HAL
+PRODUCT_PACKAGES += \
+    vendor.lineage.trust@1.0-service
+
 # Vendor service manager
 PRODUCT_PACKAGES += \
     vndservicemanager
@@ -387,7 +400,7 @@ PRODUCT_PACKAGES += \
 
 # Vibrator
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator-service
+    android.hardware.vibrator-service.sm6150
 
 # Tether
 PRODUCT_PACKAGES += \
@@ -437,10 +450,7 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/interfaces \
     hardware/google/pixel \
     hardware/samsung/aidl/power-libperfmgr \
-    hardware/samsung
-
-# VNDK
-PRODUCT_TARGET_VNDK_VERSION := 30
+	hardware/samsung
 
 # Prop files
 TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
@@ -448,5 +458,4 @@ TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
 
 # Inherit proprietary blobs
-$(call inherit-product, vendor/samsung/ruin-common/ruin-common-vendor.mk)
-$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
+$(call inherit-product, vendor/samsung/sm7150-common/sm7150-common-vendor.mk)

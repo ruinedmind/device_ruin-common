@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-COMMON_PATH := device/samsung/ruin-common
+COMMON_PATH := device/samsung/m51-common
 
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
@@ -35,31 +35,35 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 PRODUCT_PLATFORM := sm6150
 TARGET_BOARD_PLATFORM := sm6150
 TARGET_BOOTLOADER_BOARD_NAME := sm6150
+
 TARGET_NO_BOOTLOADER := true
 
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
+TARGET_ARCH_VARIANT := armv8-2a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := generic
 TARGET_CPU_VARIANT_RUNTIME := cortex-a76
+
+# 2nd Architecture
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-a
+TARGET_2ND_ARCH_VARIANT := armv8-2a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
-TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a76
+TARGET_2ND_CPU_VARIANT_RUNTIME := := cortex-a55
 
-# Kernel
+# Kernel config
 TARGET_KERNEL_SOURCE        := kernel/samsung/m51
 TARGET_KERNEL_ARCH          := arm64
 TARGET_KERNEL_HEADER_ARCH   := arm64
 TARGET_LINUX_KERNEL_VERSION := 4.14
-TARGET_USES_64_BIT_BINDER := true
-BOARD_KERNEL_CMDLINE += console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3 printk.devkmsg=on firmware_class.path=/vendor/firmware_mnt/image
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+
+# Kernel flags
+BOARD_KERNEL_CMDLINE += console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3 printk.devkmsg=on firmware_class.path=/vendor/firmware_mnt/image androidboot.selinux=permissive
 BOARD_BOOTIMG_HEADER_VERSION := 2
+
 BOARD_KERNEL_BASE            := 0x00000000
 BOARD_KERNEL_PAGESIZE        := 4096
 BOARD_RAMDISK_OFFSET         := 0x02000000
@@ -68,6 +72,8 @@ BOARD_KERNEL_TAGS_OFFSET     := 0x01e00000
 BOARD_KERNEL_IMAGE_NAME      := Image.gz-dtb
 BOARD_KERNEL_SEPARATED_DTBO  := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+# Kernel: mkbootimgs args
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
@@ -89,22 +95,30 @@ BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE   := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE  := ext4
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE      := ext4
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE    := ext4
+
 BOARD_USES_METADATA_PARTITION        := true
 TARGET_USERIMAGES_USE_F2FS           := true
 TARGET_USERIMAGES_USE_EXT4           := true
+
+# Partition sizes, obtained with blockdev --getsize64
 BOARD_DTBOIMG_PARTITION_SIZE       := 10485760
 BOARD_BOOTIMAGE_PARTITION_SIZE     := 67108864
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 82726912
 BOARD_CACHEIMAGE_PARTITION_SIZE    := 419430400
+
+# Super partition sizes, obtained with fdisk -l /dev/block/dm-[0,1,2,3]
 BOARD_SUPER_PARTITION_SIZE                      := 8053063680
-BOARD_SUPER_PARTITION_GROUPS                    := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product odm
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE           := 8048869376
+BOARD_SUPER_PARTITION_GROUPS                    := samsung_dynamic_partitions
+BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product odm
+BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE           := 8048869376
 BOARD_SYSTEMIMAGE_PARTITION_SIZE       := 4852842496
 BOARD_VENDORIMAGE_PARTITION_SIZE       := 911626240
 BOARD_PRODUCTIMAGE_PARTITION_SIZE      := 1109790720
 BOARD_ODMIMAGE_PARTITION_SIZE     	  := 4349952
+
 BOARD_FLASH_BLOCK_SIZE := 131072
+
+# Out dirs
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_ODM := odm
@@ -113,12 +127,20 @@ TARGET_COPY_OUT_ODM := odm
 USE_CUSTOM_AUDIO_POLICY := 1
 USE_XML_AUDIO_POLICY_CONF := 1
 AUDIOSERVER_MULTILIB := 32
+
 AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
 AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
 BOARD_SUPPORTS_SOUND_TRIGGER := true
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(COMMON_PATH)/bluetooth/include
+
+# Camera
+SOONG_CONFIG_NAMESPACES += samsung_sm6150CameraVars
+SOONG_CONFIG_samsung_sm7125CameraVars += \
+    samsung_sm6150_model
+
+SOONG_CONFIG_samsung_sm6150CameraVars_samsung_sm6150_model := $(TARGET_DEVICE)
 
 # Keymaster
 TARGET_KEYMASTER_VARIANT := samsung
@@ -148,10 +170,10 @@ TARGET_DISABLED_UBWC := true
 VENDOR_SECURITY_PATCH := 2022-07-01
 
 # FM
+BOARD_HAS_QCA_FM_SOC := cherokee
 BOARD_HAVE_QCOM_FM := true
-BOARD_HAS_QCA_FM_SOC := "cherokee"
 
-# Ril
+# RIL
 ENABLE_VENDOR_RIL_SERVICE := true
 
 # Recovery
@@ -165,7 +187,6 @@ TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/fstab.default
 include device/qcom/sepolicy_vndr-legacy-um/SEPolicy.mk
 BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
-TARGET_SEPOLICY_DIR := msmsteppe
 
 # Wifi
 BOARD_WLAN_DEVICE := qcwcn

@@ -7,7 +7,7 @@
 
 set -e
 
-DEVICE_COMMON=ruin-common
+DEVICE_COMMON=sm7125-common
 VENDOR=samsung
 
 # Load extractutils and do some sanity checks
