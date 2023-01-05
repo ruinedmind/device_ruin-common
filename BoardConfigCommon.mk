@@ -72,6 +72,7 @@ BOARD_KERNEL_TAGS_OFFSET     := 0x01e00000
 BOARD_KERNEL_IMAGE_NAME      := Image.gz-dtb
 BOARD_KERNEL_SEPARATED_DTBO  := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+TARGET_KERNEL_OPTIONAL_LD := true
 
 # Kernel: mkbootimgs args
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
@@ -137,7 +138,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(COMMON_PATH)/bluetooth/include
 
 # Camera
 SOONG_CONFIG_NAMESPACES += samsung_sm6150CameraVars
-SOONG_CONFIG_samsung_sm7125CameraVars += \
+SOONG_CONFIG_samsung_sm6150CameraVars += \
     samsung_sm6150_model
 
 SOONG_CONFIG_samsung_sm6150CameraVars_samsung_sm6150_model := $(TARGET_DEVICE)
